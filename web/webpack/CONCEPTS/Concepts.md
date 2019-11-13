@@ -1,40 +1,32 @@
-#Concepts
-At its core, webpack is a static module bundler for modern JavaScript applications. When webpack processes your application, it internally builds a dependency graph which maps every module your project needs and generates one or more bundles.
-
-```
-Learn more about JavaScript modules and webpack modules here.
-```
-Since version 4.0.0, webpack does not require a configuration file to bundle your project. Nevertheless, it is incredibly configurable to better fit your needs.
-
-To get started you only need to understand its Core Concepts:
-  - Entry
-  - Output
-  - Loaders
-  - Plugins
-  - Mode
-  - Browser Compatibility
-
-This document is intended to give a high-level overview of these concepts, while providing links to detailed concept-specific use cases.
-
-For a better understanding of the ideas behind module bundlers and how they work under the hood, consult these resources:
-
-
-- Manually Bundling an Application
-- Live Coding a Simple Module Bundler
-- Detailed Explanation of a Simple Module Bundler
-
 # 概念
 他的核心，webpack 对于JS应用模型是一个静态的模块打包者。
 当 webpack 处理你的应用的时候，它内部构建了一个依赖图，遍历你项目需要的每一个模块的依赖图或者生成一个或更多的包。
 
+```
+更多 JavaScript 模块和 webpack 模块请查看 CONCEPTS-->Modules
+```
+自从 4.0.0 版本后，webpack 打包项目的时候不需要配置文件。
+然而那是难以置信的对于更好的配置你的需要。
+- Entry
+- Output
+- Loaders
+- Plugins
+- Mode
+- Browser Compatibility
 
-------
+这篇文档旨在提供高级概念，同时提供详细的特定案例的链接
+
+对于一个更好理解模块打包器背后的思想和他们如何在引擎盖下工作，查阅这些资源：
+- [Manually Bundling an Application](https://www.youtube.com/watch?v=UNMkLHzofQI)
+- [Live Coding a Simple Module Bundler](https://www.youtube.com/watch?v=Gc9-7PBqOC8)
+- [Detailed Explanation of a Simple Module Bundler](https://github.com/ronami/minipack)
+
 
 ## Entry
+一个入口指示器，webpack 使用哪个模块开始构建它的内部依赖图。webpack 将计算出入口点依赖哪个模块和库(直接或间接)。
 
-An entry point indicates which module webpack should use to begin building out its internal dependency graph. webpack will figure out which other modules and libraries that entry point depends on (directly and indirectly).
+他的默认值是 ./src/index.js，但是你能通过设置 webpack 一个入口配置属性设置一个不同或多个入口点，例如： webpack.config.js
 
-By default its value is ./src/index.js, but you can specify a different (or multiple entry points) by setting an entry property in the webpack configuration. For example:
 
 webpack.config.js
 ```js
@@ -42,21 +34,15 @@ module.exports = {
   entry: './path/to/my/entry/file.js'
 };
 ```
-一个入口指示器，webpack 使用哪个模块开始构建它的内部依赖图。webpack 将计算出入口点依赖哪个模块和库(直接或间接)。
-他的默认值是 ./src/index.js，但是你能通过设置 webpack 一个入口配置属性设置一个不同或多个入口点，例如： webpack.config.js
-
 
 ```
-Learn more in the entry points section.
+更多信息查看章节 CONCEPTS-->ENTRY Points
 ```
-
-----
 
 ## Output
+output 属性告诉 webpack 将打包文件放在哪和如何去命名他们。它的主要输出文件默认放在 ./dist/main.js，其他的文件放在 ./dist 目录下。
 
-The output property tells webpack where to emit the bundles it creates and how to name these files. It defaults to ./dist/main.js for the main output file and to the ./dist folder for any other generated file.
-
-You can configure this part of the process by specifying an output field in your configuration:
+在配置文件中你可以通过 output 配置特殊的流程： webpack.config.js
 
 webpack.config.js
 ```
@@ -70,25 +56,24 @@ module.exports = {
   }
 };
 ```
-In the example above, we use the output.filename and the output.path properties to tell webpack the name of our bundle and where we want it to be emitted to. In case you're wondering about the path module being imported at the top, it is a core Node.js module that gets used to manipulate file paths.
+
 ```
 The output property has many more configurable features. If you want to learn about the concepts behind it, you can read more in the output section.
 ```
-
-output 属性告诉 webpack 将打包文件放在哪和如何去命名他们。它的主要输出文件默认放在 ./dist/main.js，其他的文件放在 ./dist 目录下。
-在配置文件中你可以通过 output 配置特殊的流程： webpack.config.js
-
 在上面的例子中，我们使用 output.filename 和 output.path 属性告诉 webpack 打包后文件的名称和想要放到哪里。
 在这个例子中你对于最顶部被导入的模块很好奇，它能操作文件的路径是 NodeJs module 的核心
 
--------
+```
+output 有更多配置特征。如果你想去了解这些概念背后，你可以多读章节 CONCEPTS-->Output
+```
 
 ## Loaders
 
-Out of the box, webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
+在盒子外面，webpack 只能理解 JavaScript 和 JSON 文件。
+Loaders 允许 webpack 去处理其他类型的文件与转变他们为被你的应用确认的有效的模块并且增加到依赖图中。
 
 ```
-Note that the ability to import any type of module, e.g. .css files, is a feature specific to webpack and may not be supported by other bundlers or task runners. We feel this extension of the language is warranted as it allows developers to build a more accurate dependency graph.
+
 ```
 
 At a high level, loaders have two properties in your webpack configuration:
@@ -122,8 +107,7 @@ It is important to remember that when defining rules in your webpack config, you
 ```
 Keep in mind that when using regex to match files, you may not quote it. i.e /\.txt$/ is not the same as '/\.txt$/' or "/\.txt$/". The former instructs webpack to match any file that ends with .txt and the latter instructs webpack to match a single file with an absolute path '.txt'; this is likely not your intention.
 ```
-在盒子外面，webpack 只能理解 JavaScript 和 JSON 文件。
-Loaders 允许 webpack 去处理其他类型的文件与转变他们为被你的应用确认的有效的模块并且增加到依赖图中。
+
 
 ```
 有能力去导入任意类型的模块，例如：.css，对于 webpack 是一个特殊的特征并且可能不被其他的打包者或任务运行者支持。
